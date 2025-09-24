@@ -1,16 +1,17 @@
-import java.util.Scanner;
 
-public class Main {
+public class Main{
     public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
-        String name;
+        Button test1 = new Button();
+        test1.start();
 
-        System.out.println("What is your name?");
-        System.out.printf("> ");
+        Balance test2 = new Balance();
+        test2.start();
 
-        name = in.nextLine();
+        Bell test3 = new Bell();
+        test3.start();
 
-        System.out.println("Hello, " + name +"!");
+        OddEvenSeparator test4 = new OddEvenSeparator();
+        test4.start();
     }
 }
