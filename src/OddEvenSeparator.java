@@ -26,16 +26,15 @@ public class OddEvenSeparator {
         }
     }
     private void even(){
-
         for(int i = 0; i< evenNumbers.size(); i++){
             System.out.print(evenNumbers.get(i) + " ");
         }
         System.out.println();
     }
     private void odd(){
-
         for(int i = 0; i< oddNumbers.size(); i++){
             System.out.print(oddNumbers.get(i) + " ");
         }
+        System.out.println();
     }
 }
