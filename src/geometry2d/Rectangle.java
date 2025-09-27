@@ -4,8 +4,8 @@ import exceptions.WrongInputDataError;
 
 public class Rectangle implements Figure {
 
-    private int aSide;
-    private int bSide;
+    private double aSide;
+    private double bSide;
 
     public Rectangle(int a, int b) throws WrongInputDataError {
 

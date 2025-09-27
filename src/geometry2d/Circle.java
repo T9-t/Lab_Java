@@ -3,8 +3,8 @@ import exceptions.WrongInputDataError;
 
 public class Circle implements Figure {
 
-    private int radius;
-    private final float PI = 3.14f;
+    private double radius;
+    private final double PI = 3.14f;
 
     public Circle(int radius) throws WrongInputDataError{
 
