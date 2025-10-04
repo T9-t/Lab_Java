@@ -1,10 +1,12 @@
+import java.security.SecureRandom;
 import java.util.*;
 
 public class Main{
+
     public static void main(String[] args) {
 
         final int N = 5;
-        Random randomInt = new Random();
+        SecureRandom randomInt = new SecureRandom();
         ArrayList<Integer> list = new ArrayList<>();
 
         System.out.println("//////////////// 1.1,1.2 //////////////////////");
