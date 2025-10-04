@@ -1,62 +1,95 @@
-import exceptions.WrongInputDataError;
-import geometry2d.Circle;
-import geometry2d.Figure;
-import geometry2d.Rectangle;
-import geometry3d.Cylinder;
+import java.util.*;
 
 public class Main{
     public static void main(String[] args) {
 
-        System.out.println("////////////////////////////////////////");
-        Button test1 = new Button();
-        test1.start();
+        final int N = 5;
+        int pastInt = 0;
+        Random randomInt = new Random();
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> uniqlist = new ArrayList<Integer>();
+        ArrayList<Integer> duplicatlist = new ArrayList<Integer>();
+        int[] arr;
 
-        System.out.println("////////////////////////////////////////");
-        Balance test2 = new Balance();
-        test2.start();
-
-        System.out.println("////////////////////////////////////////");
-        Bell test3 = new Bell();
-        test3.start();
-
-        System.out.println("////////////////////////////////////////");
-        OddEvenSeparator test4 = new OddEvenSeparator();
-        test4.start();
-
-        System.out.println("////////////////////////////////////////");
-        Table test5 = new Table(2,1);
-        test5.setValue(0,0,5);
-        test5.setValue(1,0,6);
-        System.out.println(test5);
-        test5.rows();
-        test5.average();
-
-        try {
-            System.out.println("////////////////////////////////////////");
-            Figure cir = new Circle(5);
-            System.out.println(cir);
-
-            System.out.println("////////////////////////////////////////");
-            Figure rec = new Rectangle(14,5);
-            System.out.println(rec);
-
-            System.out.println("////////////////////////////////////////");
-            Cylinder cil = new Cylinder(cir,5);
-            System.out.println(cil);
-
-        } catch (WrongInputDataError e) {
-            throw new RuntimeException(e);
+        System.out.println("//////////////// 1.1,1.2 //////////////////////");
+        for (int i = 0; i < N; i++) {
+            list.add(randomInt.nextInt(5));
         }
-        System.out.println("////////////////////////////////////////");
-        FileAnalyzer analyzer = new FileAnalyzer();
-        System.out.println(analyzer.analyze("C:\\Users\\Admin\\Desktop\\Java\\src\\txt_test.txt"));
+        System.out.println(list);
 
-        System.out.println("////////////////////////////////////////");
-        StudentGrades grades = new StudentGrades();
-        System.out.print(grades.analyze("C:\\Users\\Admin\\Desktop\\Java\\src\\Students.txt"));
-        System.out.println(" ");
-        grades.bestStudent();
-        System.out.println(" ");
-        grades.worstStudent();
+        System.out.println("////////////////// 1.3 ////////////////////");
+        Collections.sort(list);
+        System.out.println(list);
+
+        System.out.println("////////////////// 1.4 ////////////////////");
+        list.sort(Collections.reverseOrder());
+        System.out.println(list);
+
+        System.out.println("////////////////// 1.5 ////////////////////");
+        Collections.shuffle(list);
+        System.out.println(list);
+
+        System.out.println("////////////////// 1.6 ////////////////////");
+        for (int i = 0; i <= list.size(); i++) {
+
+            int nowInt;
+            if (i != list.size()) {
+
+                nowInt = list.get(i);
+                list.set(i, pastInt);
+            }
+            else {
+                nowInt = list.getLast();
+                list.set(0, pastInt);
+            }
+            pastInt = nowInt;
+        }
+        System.out.println(list);
+
+        System.out.println("////////////////// 1.7 ////////////////////");
+        for (int i : list) {
+            if (Collections.frequency(list, i) == 1) {
+                uniqlist.add(i);
+            }
+        }
+        System.out.println(uniqlist);
+
+        System.out.println("////////////////// 1.8 ////////////////////");
+        for (int i : list) {
+            if (Collections.frequency(list, i) != 1) {
+                duplicatlist.add(i);
+            }
+        }
+        System.out.println(duplicatlist);
+
+        System.out.println("////////////////// 1.9 ////////////////////");
+        arr = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+
+            arr[i] = list.get(i);
+            System.out.print(arr[i] + " ");
+        }
+        System.out.print("\n");
+
+        System.out.println("///////////////// 1.10 ////////////////////");
+        for (int i : list) {
+            System.out.println(i + " = " + Collections.frequency(list, i));
+        }
+
+        System.out.println("///////////////// 2 ////////////////////");
+        PrimesGeneratorTest test = new PrimesGeneratorTest();
+
+        test.test(4,6);
+
+        //System.out.println("///////////////// 3 ////////////////////");
+
+        System.out.println("///////////////// 4 ////////////////////");
+
+
+
+        System.out.println("///////////////// 5 ////////////////////");
+
+
+        
     }
 }
