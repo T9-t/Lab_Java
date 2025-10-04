@@ -1,62 +1,162 @@
-import exceptions.WrongInputDataError;
-import geometry2d.Circle;
-import geometry2d.Figure;
-import geometry2d.Rectangle;
-import geometry3d.Cylinder;
+import java.security.SecureRandom;
+import java.util.*;
 
 public class Main{
+
     public static void main(String[] args) {
 
-        System.out.println("////////////////////////////////////////");
-        Button test1 = new Button();
-        test1.start();
+        final int N = 5;
+        SecureRandom randomInt = new SecureRandom();
+        ArrayList<Integer> list = new ArrayList<>();
 
-        System.out.println("////////////////////////////////////////");
-        Balance test2 = new Balance();
-        test2.start();
-
-        System.out.println("////////////////////////////////////////");
-        Bell test3 = new Bell();
-        test3.start();
-
-        System.out.println("////////////////////////////////////////");
-        OddEvenSeparator test4 = new OddEvenSeparator();
-        test4.start();
-
-        System.out.println("////////////////////////////////////////");
-        Table test5 = new Table(2,1);
-        test5.setValue(0,0,5);
-        test5.setValue(1,0,6);
-        System.out.println(test5);
-        test5.rows();
-        test5.average();
-
-        try {
-            System.out.println("////////////////////////////////////////");
-            Figure cir = new Circle(5);
-            System.out.println(cir);
-
-            System.out.println("////////////////////////////////////////");
-            Figure rec = new Rectangle(14,5);
-            System.out.println(rec);
-
-            System.out.println("////////////////////////////////////////");
-            Cylinder cil = new Cylinder(cir,5);
-            System.out.println(cil);
-
-        } catch (WrongInputDataError e) {
-            throw new RuntimeException(e);
+        System.out.println("//////////////// 1.1,1.2 //////////////////////");
+        for (int i = 0; i < N; i++) {
+            list.add(randomInt.nextInt(100));
         }
-        System.out.println("////////////////////////////////////////");
-        FileAnalyzer analyzer = new FileAnalyzer();
-        System.out.println(analyzer.analyze("C:\\Users\\Admin\\Desktop\\Java\\src\\txt_test.txt"));
+        System.out.println(list);
 
-        System.out.println("////////////////////////////////////////");
-        StudentGrades grades = new StudentGrades();
-        System.out.print(grades.analyze("C:\\Users\\Admin\\Desktop\\Java\\src\\Students.txt"));
-        System.out.println(" ");
-        grades.bestStudent();
-        System.out.println(" ");
-        grades.worstStudent();
+        System.out.println("////////////////// 1.3 ////////////////////");
+        Collections.sort(list);
+        System.out.println(list);
+
+        System.out.println("////////////////// 1.4 ////////////////////");
+        list.sort(Collections.reverseOrder());
+        System.out.println(list);
+
+        System.out.println("////////////////// 1.5 ////////////////////");
+        Collections.shuffle(list);
+        System.out.println(list);
+
+        task6(list);
+
+        System.out.println("///////////////// 2 ////////////////////");
+        PrimesGeneratorTest test2 = new PrimesGeneratorTest();
+
+        test2.test(4,6);
+
+        System.out.println("///////////////// 3 ////////////////////");
+
+        ArrayList<Human> humanList = new ArrayList<>();
+        humanList.add(new Human("Anna","Johnson",15));
+        humanList.add(new Human("Drew","Johnson",23));
+        humanList.add(new Human("Hailey","Hernandez",13));
+        humanList.add(new Human("Linda","Roberts",30));
+        humanList.add(new Human("Jenny","Thomas",45));
+
+        HashSet<Human> hashSetHumans = new HashSet<>(humanList); //In random order
+        System.out.println(hashSetHumans);
+
+        LinkedHashSet<Human> linkedHashSetHumans = new LinkedHashSet<>(humanList); //In the order of the original array
+        System.out.println(linkedHashSetHumans);
+
+        TreeSet<Human> treeSetHumans = new TreeSet<>(humanList); //Sorts by compareTo in Human(Name)
+        System.out.println(treeSetHumans);
+
+        TreeSet<Human> treeSetHumansLastName = new TreeSet<>(new HumanComparatorByLastName()); //Sorts by compareTo in HumanComparatorByLastName(LastName)
+        treeSetHumansLastName.addAll(humanList);
+        System.out.println(treeSetHumansLastName);
+
+        //Sorts by age
+        TreeSet<Human> treeSetHumansage = new TreeSet<>((o1, o2) -> Integer.compare(o1.age,o2.age));
+        treeSetHumansage.addAll(humanList);
+        System.out.println(treeSetHumansage);
+
+        System.out.println("///////////////// 4 ////////////////////");
+
+        String text = "Words words name counts name name coUnts avey";
+        String[] words = text.split("\\s+");
+        HashMap<String,Integer> map = new HashMap<>();
+
+        for (String s : words) {
+
+            String word = s.toLowerCase();
+            if (map.get(word) != null) {
+
+                map.put(word, map.get(word) + 1);
+            } else {
+                map.put(word, 1);
+            }
+        }
+        System.out.println(map);
+
+        System.out.println("///////////////// 5 ////////////////////");
+
+        Map<String,Integer> studentsScore = new HashMap<>();
+        Map<Integer,String> scoreStudents = new HashMap<>();
+        studentsScore.put("Drew",5);
+        studentsScore.put("Alan",4);
+        studentsScore.put("Janet",5);
+        studentsScore.put("Bryan",3);
+        studentsScore.put("Anna",4);
+
+        for (Map.Entry<String,Integer> entry : studentsScore.entrySet()){
+
+            String names;
+            if (scoreStudents.get(entry.getValue()) != null){
+
+                names = scoreStudents.get(entry.getValue()) + "; " + entry.getKey();
+            }
+            else{
+                names = entry.getKey();
+            }
+            scoreStudents.put(entry.getValue(), names);
+        }
+        System.out.println(studentsScore);
+        System.out.println(scoreStudents);
+    }
+
+    public static void task6(ArrayList<Integer> list){
+
+        int pastInt = 0;
+        ArrayList<Integer> uniqlist = new ArrayList<>();
+        ArrayList<Integer> duplicatlist = new ArrayList<>();
+        int[] arr;
+
+        System.out.println("////////////////// 1.6 ////////////////////");
+        for (int i = 0; i <= list.size(); i++) {
+
+            int nowInt;
+            if (i != list.size()) {
+
+                nowInt = list.get(i);
+                list.set(i, pastInt);
+            }
+            else {
+                nowInt = list.getLast();
+                list.set(0, pastInt);
+            }
+            pastInt = nowInt;
+        }
+        System.out.println(list);
+
+        System.out.println("////////////////// 1.7 ////////////////////");
+        for (int i : list) {
+            if (Collections.frequency(list, i) == 1) {
+                uniqlist.add(i);
+            }
+        }
+        System.out.println(uniqlist);
+
+        System.out.println("////////////////// 1.8 ////////////////////");
+        for (int i : list) {
+            if (Collections.frequency(list, i) != 1) {
+                duplicatlist.add(i);
+            }
+        }
+        System.out.println(duplicatlist);
+
+        System.out.println("////////////////// 1.9 ////////////////////");
+        arr = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+
+            arr[i] = list.get(i);
+            System.out.print(arr[i] + " ");
+        }
+        System.out.print("\n");
+
+        System.out.println("///////////////// 1.10 ////////////////////");
+        for (int i : list) {
+            System.out.println(i + " = " + Collections.frequency(list, i));
+        }
     }
 }
