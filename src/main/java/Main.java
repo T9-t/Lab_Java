@@ -20,7 +20,7 @@ public class Main {
         try (BufferedReader reader = new BufferedReader(new FileReader("books.json"))) {
             visitors = gson.fromJson(reader, arrayType);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("File error", e);
             return;
         }
 
@@ -61,7 +61,7 @@ public class Main {
             System.out.println("//////////////// 6 //////////////////////");
             List<SmsMessage> smsMessages = new LinkedList<>();
             List<Visitor> subscribedVisitors = visitors.stream()
-                    .filter(visitor -> visitor.isSubscribed() == true)
+                    .filter(visitor -> visitor.isSubscribed())
                     .toList();
             List<Integer> subscribedVisitorsBooksCount = visitors.stream()
                     .map(visitor -> visitor.getFavoriteBooks().size())
