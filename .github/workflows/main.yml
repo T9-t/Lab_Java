@@ -17,7 +17,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Compile java files
-        run: |
-          mkdir -p classes
-          javac -d classes $(find ./src -name "*.java")
-          mvn clean compile
+        run: mvn clean compile
