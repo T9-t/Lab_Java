@@ -21,7 +21,6 @@ public class Main {
             visitors = gson.fromJson(reader, arrayType);
         } catch (IOException e) {
             throw new RuntimeException("File error", e);
-            return;
         }
 
         if (visitors != null) {
