@@ -21,11 +21,11 @@ jobs:
           java-version: 21
 
       - name: Compile Java sources
-        run: |
-          mkdir -p build
-          javac -d build $(find src -name "*.java")
+        run: mvn clean compile
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: -Dsonar.java.binaries=target/classes
