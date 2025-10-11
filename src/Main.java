@@ -1,162 +1,66 @@
-import java.security.SecureRandom;
-import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import model.Book;
+import model.Visitor;
 
-public class Main{
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+public class Main {
     public static void main(String[] args) {
 
-        final int N = 5;
-        SecureRandom randomInt = new SecureRandom();
-        ArrayList<Integer> list = new ArrayList<>();
+        Gson gson = new Gson();
+        Type arrayType = new TypeToken<List<Visitor>>() {}.getType();
 
-        System.out.println("//////////////// 1.1,1.2 //////////////////////");
-        for (int i = 0; i < N; i++) {
-            list.add(randomInt.nextInt(100));
+        List<Visitor> visitors = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Admin\\Desktop\\Lab_java2\\books.json"))) {
+            visitors = gson.fromJson(reader, arrayType);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
         }
-        System.out.println(list);
 
-        System.out.println("////////////////// 1.3 ////////////////////");
-        Collections.sort(list);
-        System.out.println(list);
+        if (visitors != null) {
 
-        System.out.println("////////////////// 1.4 ////////////////////");
-        list.sort(Collections.reverseOrder());
-        System.out.println(list);
+            System.out.println(visitors.toString());
+            System.out.println("Visitor count: " + visitors.stream().count());
 
-        System.out.println("////////////////// 1.5 ////////////////////");
-        Collections.shuffle(list);
-        System.out.println(list);
+            Set<Book> books = visitors.stream()
+                    .flatMap(visitor -> visitor.getFavoriteBooks().stream())
+                    .collect(Collectors.toSet());
+            System.out.println(books.toString());
+            System.out.println("Books count: " + books.size());
 
-        task6(list);
+            List<Book> sortedBooks = books.stream()
+                    .sorted((thisBook,otherBook) -> Integer.compare(thisBook.getPublishingYear(),otherBook.getPublishingYear()))
+                    .toList();
+            System.out.println(sortedBooks.toString());
 
-        System.out.println("///////////////// 2 ////////////////////");
-        PrimesGeneratorTest test2 = new PrimesGeneratorTest();
+            List<Visitor> visitorWithBook = visitors.stream()
+                    .filter(visitor -> visitor.getFavoriteBooks().stream()
+                            .anyMatch( book -> "Jane Austen".equals(book.getAuthor())))
+                    .toList();
+            System.out.println(visitorWithBook.toString());
 
-        test2.test(4,6);
+            List<Integer> favoriteBooksSize = visitors.stream()
+                    .map(visitor -> visitor.getFavoriteBooks().size())
+                    .toList();
+            Optional<Integer> booksCount = favoriteBooksSize.stream()
+                    .max(Comparator.naturalOrder());
+            System.out.println("Max books count in favorite: " + booksCount.get());
 
-        System.out.println("///////////////// 3 ////////////////////");
 
-        ArrayList<Human> humanList = new ArrayList<>();
-        humanList.add(new Human("Anna","Johnson",15));
-        humanList.add(new Human("Drew","Johnson",23));
-        humanList.add(new Human("Hailey","Hernandez",13));
-        humanList.add(new Human("Linda","Roberts",30));
-        humanList.add(new Human("Jenny","Thomas",45));
 
-        HashSet<Human> hashSetHumans = new HashSet<>(humanList); //In random order
-        System.out.println(hashSetHumans);
 
-        LinkedHashSet<Human> linkedHashSetHumans = new LinkedHashSet<>(humanList); //In the order of the original array
-        System.out.println(linkedHashSetHumans);
 
-        TreeSet<Human> treeSetHumans = new TreeSet<>(humanList); //Sorts by compareTo in Human(Name)
-        System.out.println(treeSetHumans);
-
-        TreeSet<Human> treeSetHumansLastName = new TreeSet<>(new HumanComparatorByLastName()); //Sorts by compareTo in HumanComparatorByLastName(LastName)
-        treeSetHumansLastName.addAll(humanList);
-        System.out.println(treeSetHumansLastName);
-
-        //Sorts by age
-        TreeSet<Human> treeSetHumansage = new TreeSet<>((o1, o2) -> Integer.compare(o1.age,o2.age));
-        treeSetHumansage.addAll(humanList);
-        System.out.println(treeSetHumansage);
-
-        System.out.println("///////////////// 4 ////////////////////");
-
-        String text = "Words words name counts name name coUnts avey";
-        String[] words = text.split("\\s+");
-        HashMap<String,Integer> map = new HashMap<>();
-
-        for (String s : words) {
-
-            String word = s.toLowerCase();
-            if (map.get(word) != null) {
-
-                map.put(word, map.get(word) + 1);
-            } else {
-                map.put(word, 1);
-            }
-        }
-        System.out.println(map);
-
-        System.out.println("///////////////// 5 ////////////////////");
-
-        Map<String,Integer> studentsScore = new HashMap<>();
-        Map<Integer,String> scoreStudents = new HashMap<>();
-        studentsScore.put("Drew",5);
-        studentsScore.put("Alan",4);
-        studentsScore.put("Janet",5);
-        studentsScore.put("Bryan",3);
-        studentsScore.put("Anna",4);
-
-        for (Map.Entry<String,Integer> entry : studentsScore.entrySet()){
-
-            String names;
-            if (scoreStudents.get(entry.getValue()) != null){
-
-                names = scoreStudents.get(entry.getValue()) + "; " + entry.getKey();
-            }
-            else{
-                names = entry.getKey();
-            }
-            scoreStudents.put(entry.getValue(), names);
-        }
-        System.out.println(studentsScore);
-        System.out.println(scoreStudents);
-    }
-
-    public static void task6(ArrayList<Integer> list){
-
-        int pastInt = 0;
-        ArrayList<Integer> uniqlist = new ArrayList<>();
-        ArrayList<Integer> duplicatlist = new ArrayList<>();
-        int[] arr;
-
-        System.out.println("////////////////// 1.6 ////////////////////");
-        for (int i = 0; i <= list.size(); i++) {
-
-            int nowInt;
-            if (i != list.size()) {
-
-                nowInt = list.get(i);
-                list.set(i, pastInt);
-            }
-            else {
-                nowInt = list.getLast();
-                list.set(0, pastInt);
-            }
-            pastInt = nowInt;
-        }
-        System.out.println(list);
-
-        System.out.println("////////////////// 1.7 ////////////////////");
-        for (int i : list) {
-            if (Collections.frequency(list, i) == 1) {
-                uniqlist.add(i);
-            }
-        }
-        System.out.println(uniqlist);
-
-        System.out.println("////////////////// 1.8 ////////////////////");
-        for (int i : list) {
-            if (Collections.frequency(list, i) != 1) {
-                duplicatlist.add(i);
-            }
-        }
-        System.out.println(duplicatlist);
-
-        System.out.println("////////////////// 1.9 ////////////////////");
-        arr = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-
-            arr[i] = list.get(i);
-            System.out.print(arr[i] + " ");
-        }
-        System.out.print("\n");
-
-        System.out.println("///////////////// 1.10 ////////////////////");
-        for (int i : list) {
-            System.out.println(i + " = " + Collections.frequency(list, i));
+        } else {
+            System.out.println("Список посетителей не был загружен или пуст.");
         }
     }
 }
