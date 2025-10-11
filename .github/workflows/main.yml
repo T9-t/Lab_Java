@@ -20,3 +20,4 @@ jobs:
         run: |
           mkdir -p classes
           javac -d classes $(find ./src -name "*.java")
+          mvn clean compile
