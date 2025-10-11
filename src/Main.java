@@ -17,7 +17,7 @@ public class Main {
 
         List<Visitor> visitors = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Admin\\Desktop\\Lab_java2\\books.json"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("books.json"))) {
             visitors = gson.fromJson(reader, arrayType);
         } catch (IOException e) {
             e.printStackTrace();
