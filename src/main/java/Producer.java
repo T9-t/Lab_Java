@@ -14,6 +14,7 @@ public class Producer implements Runnable{
                 warehouse.receiveOrder(Main.randomOrder());
 
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
             }
         }

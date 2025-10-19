@@ -15,6 +15,7 @@ public class Consumer implements Runnable {
                 warehouse.fulfillOrder();
 
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
             }
         }

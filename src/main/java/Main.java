@@ -30,7 +30,9 @@ public class Main {
             service.submit(() -> {
                 try {
                    warehouse.receiveOrder(randomOrder());
+
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
             });

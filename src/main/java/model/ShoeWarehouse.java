@@ -49,6 +49,7 @@ public class ShoeWarehouse {
                         lock.wait();
 
                     } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                         throw new RuntimeException(e);
                     }
                 }
