@@ -1,52 +1,38 @@
-import model.Order;
-import model.ShoeWarehouse;
-
-import java.security.SecureRandom;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import static model.ShoeWarehouse.productType;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws IOException {
 
-        final int N = 10;
-        ExecutorService service = Executors.newFixedThreadPool(2);
+        Path dir = Paths.get("Procvetova");
+        Files.createDirectories(dir);
 
-        Thread evenThread = new EvenThread();
-        Thread oddThread = new Thread(new OddRunnable());
+        Path file = dir.resolve("Veronica.txt");
+        Files.createFile(file);
 
-        evenThread.start();
-        oddThread.start();
+        Path dir123 = dir.resolve("dir1/dir2/dir3");
+        Files.createDirectories(dir123);
 
-        ShoeWarehouse warehouse = new ShoeWarehouse(service);
-        Thread producer = new Thread(new Producer(warehouse,N));
-        Thread consumer = new Thread(new Consumer(warehouse));
+        Files.copy(file, Paths.get("Procvetova/dir1/dir2/dir3/Veronica.txt"),StandardCopyOption.REPLACE_EXISTING);
 
-        producer.start();
-        consumer.start();
+        Path dir1 = Paths.get("Procvetova/dir1");
+        Path file1 = dir1.resolve("file1.txt");
+        Files.createFile(file1);
 
-        for (int i = 0; i < N; i++) {
-            service.submit(() -> {
-                try {
-                   warehouse.receiveOrder(randomOrder());
+        Path file2 = Paths.get("Procvetova/dir1/dir2").resolve("file2.txt");
+        Files.createFile(file2);
 
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
-                }
-            });
-            warehouse.fulfillOrderService();
-        }
-        service.shutdown();
-    }
-    public static Order randomOrder(){
+        Files.walk(dir)
+                .forEach(p -> System.out.println((Files.isDirectory(p) ? "D: " : "F: ") + p.getFileName()));
 
-        SecureRandom randomInt = new SecureRandom();
-        int id = randomInt.nextInt(1000)
-        ,shoesTypeNumber = randomInt.nextInt(productType.size() - 1)
-        ,quantity = randomInt.nextInt(100);
-
-        return new Order( id,productType.get(shoesTypeNumber),quantity);
+        Files.walk(dir1)
+                .sorted(Comparator.reverseOrder())
+                .forEach(p -> {
+                    try { Files.delete(p); } catch (Exception e) { e.printStackTrace(); }
+                });
     }
 }
