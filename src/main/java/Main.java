@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -6,8 +7,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
 
+        //Task #1
+        Invoker invoker = new Invoker();
+        invoker.start();
+
+        //Task #2
         Path dir = Paths.get("Procvetova");
         Files.createDirectories(dir);
 
