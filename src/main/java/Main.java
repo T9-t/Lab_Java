@@ -45,6 +45,7 @@ public class Main {
                             Files.delete(p);
 
                         } catch (Exception e) {
+
                             e.printStackTrace();
                         }
                     });
