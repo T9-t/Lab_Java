@@ -7,12 +7,9 @@ public class Invoker extends MyClass {
 
         for (Method method : MyClass.class.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Repeat.class)) {
-                Repeat r = method.getAnnotation(Repeat.class);
 
-                //method.setAccessible(true); Sonar says "This accessibility update should be removed"
-                if (!method.trySetAccessible()){
-                    throw new IllegalAccessException("Error");
-                }
+                Repeat r = method.getAnnotation(Repeat.class);
+                method.setAccessible(true);
                 for (int i = 0; i < r.times(); i++) {
                     method.invoke(obj);
                 }
