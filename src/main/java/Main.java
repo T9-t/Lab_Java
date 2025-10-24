@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
@@ -32,13 +33,21 @@ public class Main {
         Path file2 = Paths.get("Procvetova/dir1/dir2").resolve("file2.txt");
         Files.createFile(file2);
 
-        Files.walk(dir)
-                .forEach(p -> System.out.println((Files.isDirectory(p) ? "D: " : "F: ") + p.getFileName()));
+        try (Stream<Path> stream = Files.walk(dir)){
+            stream.forEach(p -> System.out.println((Files.isDirectory(p) ? "D: " : "F: ") + p.getFileName()));
+        }
 
-        Files.walk(dir1)
-                .sorted(Comparator.reverseOrder())
-                .forEach(p -> {
-                    try { Files.delete(p); } catch (Exception e) { e.printStackTrace(); }
-                });
+        try (Stream<Path> stream = Files.walk(dir1)) {
+
+            stream.sorted(Comparator.reverseOrder())
+                    .forEach(p -> {
+                        try {
+                            Files.delete(p);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+        }
     }
 }
