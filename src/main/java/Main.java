@@ -1,52 +1,54 @@
-import model.Order;
-import model.ShoeWarehouse;
-
-import java.security.SecureRandom;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import static model.ShoeWarehouse.productType;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
 
-        final int N = 10;
-        ExecutorService service = Executors.newFixedThreadPool(2);
+        //Task #1
+        Invoker invoker = new Invoker();
+        invoker.start();
 
-        Thread evenThread = new EvenThread();
-        Thread oddThread = new Thread(new OddRunnable());
+        //Task #2
+        Path dir = Paths.get("Procvetova");
+        Files.createDirectories(dir);
 
-        evenThread.start();
-        oddThread.start();
+        Path file = dir.resolve("Veronica.txt");
+        Files.createFile(file);
 
-        ShoeWarehouse warehouse = new ShoeWarehouse(service);
-        Thread producer = new Thread(new Producer(warehouse,N));
-        Thread consumer = new Thread(new Consumer(warehouse));
+        Path dir123 = dir.resolve("dir1/dir2/dir3");
+        Files.createDirectories(dir123);
 
-        producer.start();
-        consumer.start();
+        Files.copy(file, Paths.get("Procvetova/dir1/dir2/dir3/Veronica.txt"),StandardCopyOption.REPLACE_EXISTING);
 
-        for (int i = 0; i < N; i++) {
-            service.submit(() -> {
-                try {
-                   warehouse.receiveOrder(randomOrder());
+        Path dir1 = Paths.get("Procvetova/dir1");
+        Path file1 = dir1.resolve("file1.txt");
+        Files.createFile(file1);
 
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
-                }
-            });
-            warehouse.fulfillOrderService();
+        Path file2 = Paths.get("Procvetova/dir1/dir2").resolve("file2.txt");
+        Files.createFile(file2);
+
+        try (Stream<Path> stream = Files.walk(dir)){
+            stream.forEach(p -> System.out.println((Files.isDirectory(p) ? "D: " : "F: ") + p.getFileName()));
         }
-        service.shutdown();
-    }
-    public static Order randomOrder(){
 
-        SecureRandom randomInt = new SecureRandom();
-        int id = randomInt.nextInt(1000)
-        ,shoesTypeNumber = randomInt.nextInt(productType.size() - 1)
-        ,quantity = randomInt.nextInt(100);
+        try (Stream<Path> stream = Files.walk(dir1)) {
 
-        return new Order( id,productType.get(shoesTypeNumber),quantity);
+            stream.sorted(Comparator.reverseOrder())
+                    .forEach(p -> {
+                        try {
+                            Files.delete(p);
+
+                        } catch (Exception e) {
+
+                            //e.printStackTrace();
+                        }
+                    });
+        }
     }
 }
