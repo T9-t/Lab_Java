@@ -1,54 +1,37 @@
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Comparator;
-import java.util.stream.Stream;
+import lsp.Bird;
+import lsp.Penguin;
+import lsp.Sparrow;
+import ocp.Regular;
+import ocp.SuperVip;
+import ocp.Vip;
+import srp.ReportManager;
+
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
+    public static void main(String[] args) {
 
-        //Task #1
-        Invoker invoker = new Invoker();
-        invoker.start();
+        // ---------- S ----------
+        //ReportManager manager = new ReportManager(List.of(5, 10, 15, 20));
+        //manager.generateReport();
 
-        //Task #2
-        Path dir = Paths.get("Procvetova");
-        Files.createDirectories(dir);
+        // ---------- O ----------
 
-        Path file = dir.resolve("Veronica.txt");
-        Files.createFile(file);
+        Regular regular = new Regular();
+        Vip vip = new Vip();
+        SuperVip superVip = new SuperVip();
 
-        Path dir123 = dir.resolve("dir1/dir2/dir3");
-        Files.createDirectories(dir123);
+        System.out.println("Regular: " + regular.calculateDiscount(1000));
+        System.out.println("VIP: " + vip.calculateDiscount(1000));
+        System.out.println("Super VIP: " + superVip.calculateDiscount(1000));
 
-        Files.copy(file, Paths.get("Procvetova/dir1/dir2/dir3/Veronica.txt"),StandardCopyOption.REPLACE_EXISTING);
+        // ---------- L ----------
+        displayBird(new Sparrow());
+        displayBird(new Penguin());
+    }
 
-        Path dir1 = Paths.get("Procvetova/dir1");
-        Path file1 = dir1.resolve("file1.txt");
-        Files.createFile(file1);
-
-        Path file2 = Paths.get("Procvetova/dir1/dir2").resolve("file2.txt");
-        Files.createFile(file2);
-
-        try (Stream<Path> stream = Files.walk(dir)){
-            stream.forEach(p -> System.out.println((Files.isDirectory(p) ? "D: " : "F: ") + p.getFileName()));
-        }
-
-        try (Stream<Path> stream = Files.walk(dir1)) {
-
-            stream.sorted(Comparator.reverseOrder())
-                    .forEach(p -> {
-                        try {
-                            Files.delete(p);
-
-                        } catch (Exception e) {
-
-                            //e.printStackTrace();
-                        }
-                    });
-        }
+    public static void displayBird(Bird bird) {
+        bird.eat();
+        bird.fly();
     }
 }
