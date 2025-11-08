@@ -12,11 +12,11 @@ public class Main {
     public static void main(String[] args) {
 
         // ---------- S ----------
-        //ReportManager manager = new ReportManager(List.of(5, 10, 15, 20));
-        //manager.generateReport();
+        List<Integer> list = List.of(5, 10, 15, 20);
+        ReportManager manager = new ReportManager();
+        manager.generateReport(list);
 
         // ---------- O ----------
-
         Regular regular = new Regular();
         Vip vip = new Vip();
         SuperVip superVip = new SuperVip();
@@ -27,9 +27,9 @@ public class Main {
 
         // ---------- L ----------
         displayBird(new Sparrow());
-        displayBird(new Penguin());
+        Penguin penguin = new Penguin();
+        penguin.eat();
     }
-
     public static void displayBird(Bird bird) {
         bird.eat();
         bird.fly();
