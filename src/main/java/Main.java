@@ -1,37 +1,30 @@
-import lsp.Bird;
-import lsp.Penguin;
-import lsp.Sparrow;
-import ocp.Regular;
-import ocp.SuperVip;
-import ocp.Vip;
-import srp.ReportManager;
-
-import java.util.List;
+import java.sql.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException{
 
-        // ---------- S ----------
-        List<Integer> list = List.of(5, 10, 15, 20);
-        ReportManager manager = new ReportManager();
-        manager.generateReport(list);
+        String sqlBooks = "SELECT * FROM books";
+        String sqlMusic = "SELECT * FROM music";
+        String sqlVisitors = "SELECT * FROM visitors";
 
-        // ---------- O ----------
-        Regular regular = new Regular();
-        Vip vip = new Vip();
-        SuperVip superVip = new SuperVip();
+        String urlBooks = "jdbc:h2:file:C:\\Users\\Admin\\Desktop\\Lab_java2\\books";
+        String urlMusic = "jdbc:h2:file:C:\\Users\\Admin\\Desktop\\Lab_java2\\music";
+        String urlVisitors = "jdbc:h2:file:C:\\Users\\Admin\\Desktop\\Lab_java2\\visitors";
 
-        System.out.println("Regular: " + regular.calculateDiscount(1000));
-        System.out.println("VIP: " + vip.calculateDiscount(1000));
-        System.out.println("Super VIP: " + superVip.calculateDiscount(1000));
+        BooksTable books = new BooksTable(urlBooks);
+        MusicTable music = new MusicTable(urlMusic);
+        VisitorsTable visitors = new VisitorsTable(urlVisitors);
 
-        // ---------- L ----------
-        displayBird(new Sparrow());
-        Penguin penguin = new Penguin();
-        penguin.eat();
-    }
-    public static void displayBird(Bird bird) {
-        bird.eat();
-        bird.fly();
+        //books.createTable();
+        //music.createTable();
+        //visitors.createTable();
+
+        books.select(sqlBooks);
+        music.select(sqlMusic);
+        visitors.select(sqlVisitors);
+
+        //books.deleteTable();
+        //music.deleteTable();
+        //visitors.deleteTable();
     }
 }
