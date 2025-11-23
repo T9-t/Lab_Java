@@ -38,16 +38,20 @@ public class VisitorsTable  implements CommanderSQL{
         insert("Lily","Jones","555-777-8888",true);
         insert("Oliver","Baker","555-888-9999",true);
     }
-    public void insert(String name, String surname, String phone, Boolean subscribed) throws SQLException {
+    public void insert(String name, String surname, String phone, Boolean subscribed) {
 
         String sql = "INSERT INTO visitors (name,surname,phone,subscribed) VALUES (?,?,?,?)";
-        PreparedStatement ps = connect.prepareStatement(sql);
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
 
-        ps.setString(1, name);
-        ps.setString(2, surname);
-        ps.setString(3, phone);
-        ps.setBoolean(4, subscribed);
-        ps.executeUpdate();
+            ps.setString(1, name);
+            ps.setString(2, surname);
+            ps.setString(3, phone);
+            ps.setBoolean(4, subscribed);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public void select(String sql) throws SQLException {

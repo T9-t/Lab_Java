@@ -44,17 +44,21 @@ public class BooksTable implements CommanderSQL{
         insert("The Girl on the Train","Paula Hawkins",2015,"0007555445","Riverhead Books");
         insert("The Lord of the Rings","J.R.Tolkien",1954,"0395026468","Allen & Unwin");
     }
-    public void insert(String name, String author, int publishingYear, String isbn, String publisher) throws SQLException {
+    public void insert(String name, String author, int publishingYear, String isbn, String publisher) {
 
         String sql = "INSERT INTO books (name,author,publishingYear,isbn,publisher) VALUES (?,?,?,?,?)";
-        PreparedStatement ps = connect.prepareStatement(sql);
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
 
-        ps.setString(1, name);
-        ps.setString(2, author);
-        ps.setInt(3, publishingYear);
-        ps.setString(4, isbn);
-        ps.setString(5, publisher);
-        ps.executeUpdate();
+            ps.setString(1, name);
+            ps.setString(2, author);
+            ps.setInt(3, publishingYear);
+            ps.setString(4, isbn);
+            ps.setString(5, publisher);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public void select(String sql) throws SQLException {

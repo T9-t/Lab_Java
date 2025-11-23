@@ -4,8 +4,11 @@ import java.sql.SQLException;
 
 public class Connector {
     public static Connection startConnection(String url) {
+
+        String username = "root";
+        String password = "123";
         try {
-            return DriverManager.getConnection(url, "root", "");
+            return DriverManager.getConnection(url,username,password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

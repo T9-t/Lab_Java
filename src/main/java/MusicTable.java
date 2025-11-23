@@ -40,13 +40,17 @@ public class MusicTable implements CommanderSQL {
         insert("Crazy Train");
         insert("Always");
     }
-    public void insert(String name) throws SQLException {
+    public void insert(String name) {
 
         String sql = "INSERT INTO music (name) VALUES (?)";
-        PreparedStatement ps = connect.prepareStatement(sql);
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
 
-        ps.setString(1, name);
-        ps.executeUpdate();
+            ps.setString(1, name);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public void select(String sql) throws SQLException {
