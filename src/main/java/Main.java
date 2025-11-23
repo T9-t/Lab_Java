@@ -1,10 +1,23 @@
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) throws SQLException{
 
         String username = "root";
-        String password = "123";
+        String password = "";
+
+        Properties prop = new Properties();
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+
+            prop.load(fis);
+            password = prop.getProperty("password");
+
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
 
         String sqlBooks = "SELECT * FROM books";
         String sqlMusic = "SELECT * FROM music";
