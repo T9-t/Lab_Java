@@ -15,16 +15,47 @@ public class Main {
         MusicTable music = new MusicTable(urlMusic);
         VisitorsTable visitors = new VisitorsTable(urlVisitors);
 
-        //books.createTable();
-        //music.createTable();
-        //visitors.createTable();
+        /// remove this entry if the tables have already been created.
+        books.createTable();
+        music.createTable();
+        visitors.createTable();
+        ///
 
-        books.select(sqlBooks);
+        System.out.println("//////////////// 1 //////////////////");
+
         music.select(sqlMusic);
+
+        System.out.println("//////////////// 2 //////////////////");
+
+        String sqlMusic2 = "SELECT * FROM music WHERE LOWER(name) NOT LIKE '%t%' AND LOWER(name) NOT LIKE '%m%'";
+        music.select(sqlMusic2);
+
+        System.out.println("//////////////// 3 //////////////////");
+
+        music.insert("Sister Splinter");
+        music.select(sqlMusic);
+
+        System.out.println("//////////////// 5 //////////////////");
+
+        String sqlBooks5 = "SELECT * FROM books ORDER BY publishingYear";
+        books.select(sqlBooks5);
+
+        System.out.println("//////////////// 6 //////////////////");
+
+        String sqlBooks6 = "SELECT * FROM books WHERE publishingYear < 2000";
+        books.select(sqlBooks6);
+
+        System.out.println("//////////////// 7 //////////////////");
+
+        visitors.insert("Veronika","Procvetova","900-990-9999",false);
         visitors.select(sqlVisitors);
 
-        //books.deleteTable();
-        //music.deleteTable();
-        //visitors.deleteTable();
+        books.insert("Three Men in a Boat (To Say Nothing of the Dog)","Jerome K.Jerome",1889,"0060730508","J.W.Arrowsmith");
+        books.insert("The Colossus Rises","Peter Lerangis",2013,"0150730538","HarperCollins");
+        books.select(sqlBooks);
+
+        books.deleteTable();
+        music.deleteTable();
+        visitors.deleteTable();
     }
 }
