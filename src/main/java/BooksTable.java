@@ -5,9 +5,9 @@ public class BooksTable implements CommanderSQL{
     private final Connection connect;
     private final Statement stmt;
 
-    public BooksTable(String url) throws SQLException {
+    public BooksTable(String url, String username, String password) throws SQLException {
 
-        connect = Connector.startConnection(url);
+        connect = Connector.startConnection(url, username, password);
         stmt = connect.createStatement();
     }
     @Override

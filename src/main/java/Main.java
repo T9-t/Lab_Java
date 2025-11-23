@@ -3,6 +3,9 @@ import java.sql.*;
 public class Main {
     public static void main(String[] args) throws SQLException{
 
+        String username = "root";
+        String password = "123";
+
         String sqlBooks = "SELECT * FROM books";
         String sqlMusic = "SELECT * FROM music";
         String sqlVisitors = "SELECT * FROM visitors";
@@ -11,9 +14,9 @@ public class Main {
         String urlMusic = "jdbc:h2:file:C:\\Users\\Admin\\Desktop\\Lab_java2\\music";
         String urlVisitors = "jdbc:h2:file:C:\\Users\\Admin\\Desktop\\Lab_java2\\visitors";
 
-        BooksTable books = new BooksTable(urlBooks);
-        MusicTable music = new MusicTable(urlMusic);
-        VisitorsTable visitors = new VisitorsTable(urlVisitors);
+        BooksTable books = new BooksTable(urlBooks,username,password);
+        MusicTable music = new MusicTable(urlMusic,username,password);
+        VisitorsTable visitors = new VisitorsTable(urlVisitors,username,password);
 
         /// remove this entry if the tables have already been created.
         books.createTable();

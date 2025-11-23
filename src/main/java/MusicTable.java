@@ -5,9 +5,9 @@ public class MusicTable implements CommanderSQL {
     private final Connection connect;
     private final Statement stmt;
 
-    public MusicTable(String url) throws SQLException {
+    public MusicTable(String url, String username, String password) throws SQLException {
 
-        connect = Connector.startConnection(url);
+        connect = Connector.startConnection(url, username, password);
         stmt = connect.createStatement();
     }
     @Override
