@@ -1,10 +1,12 @@
 package org.example.javafx;
-
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+
+import java.security.SecureRandom;
 
 public class Art2dController {
     @FXML
@@ -13,11 +15,17 @@ public class Art2dController {
     @FXML
     protected void onButtonCircleClick() {
 
-        Circle newCircle = new Circle(Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100));
-        newCircle.setFill(javafx.scene.paint.Color.color(Math.random(), Math.random(), Math.random()));
+        SecureRandom randomInt = new SecureRandom();
 
-        newCircle.setLayoutX(Math.floor(Math.random() * (606 - 100 + 1)));
-        newCircle.setLayoutY(Math.floor(Math.random() * (378 - 107 + 1)));
+        final double[] red = {randomInt.nextDouble()};
+        final double[] green = {randomInt.nextDouble()};
+        final double[] blue = {randomInt.nextDouble()};
+
+        Circle newCircle = new Circle(randomInt.nextInt(100), randomInt.nextInt(100), randomInt.nextInt(100));
+        newCircle.setFill(new Color(red[0], green[0], blue[0],1.0));
+
+        newCircle.setLayoutX(randomInt.nextInt(700 - 100 + 1));
+        newCircle.setLayoutY(randomInt.nextInt(580 - 107 + 1));
 
         newCircle.setOnMousePressed(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -39,7 +47,12 @@ public class Art2dController {
         });
         newCircle.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY) {
-                newCircle.setFill(javafx.scene.paint.Color.color(Math.random(), Math.random(), Math.random()));
+
+                red[0] = randomInt.nextDouble();
+                green[0] = randomInt.nextDouble();
+                blue[0] = randomInt.nextDouble();
+
+                newCircle.setFill(new Color(red[0], green[0], blue[0],1.0));
             }
         });
         pane.getChildren().add(newCircle);
@@ -47,10 +60,17 @@ public class Art2dController {
     @FXML
     protected void onButtonRectangleClick() {
 
-        Rectangle newRectangle = new Rectangle(Math.floor(Math.random() * 100), Math.floor(Math.random() * 100));
-        newRectangle.setFill(javafx.scene.paint.Color.color(Math.random(), Math.random(), Math.random()));
-        newRectangle.setLayoutX(Math.floor(Math.random() * (606 - 100 + 1)));
-        newRectangle.setLayoutY(Math.floor(Math.random() * (378 - 107 + 1)));
+        SecureRandom randomInt = new SecureRandom();
+
+        final double[] red = {randomInt.nextDouble()};
+        final double[] green = {randomInt.nextDouble()};
+        final double[] blue = {randomInt.nextDouble()};
+
+        Rectangle newRectangle = new Rectangle(randomInt.nextInt(100), randomInt.nextInt(100));
+        newRectangle.setFill(new Color(red[0], green[0], blue[0],1.0));
+
+        newRectangle.setLayoutX(randomInt.nextInt(700 - 100 + 1));
+        newRectangle.setLayoutY(randomInt.nextInt(580 - 107 + 1));
 
         newRectangle.setOnMousePressed(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -72,7 +92,12 @@ public class Art2dController {
         });
         newRectangle.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY) {
-                newRectangle.setFill(javafx.scene.paint.Color.color(Math.random(), Math.random(), Math.random()));
+
+                red[0] = randomInt.nextDouble();
+                green[0] = randomInt.nextDouble();
+                blue[0] = randomInt.nextDouble();
+
+                newRectangle.setFill(new Color(red[0], green[0], blue[0],1.0));
             }
         });
         pane.getChildren().add(newRectangle);
