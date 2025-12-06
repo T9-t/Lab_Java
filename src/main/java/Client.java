@@ -9,16 +9,17 @@ public class Client {
     private final int PORT = 8080;
     private final String HOST = "localhost";
 
-    public Client(String name){
-        try {
-            Socket socket = new Socket(HOST, PORT);
-            PrintWriter writer = new PrintWriter(socket.getOutputStream(),true);
-            writer.println(name);
+    //-------------Class for test Sonar, gives an error
+    //public Client(String name){
+    //    try {
+    //        Socket socket = new Socket(HOST, PORT);
+    //        PrintWriter writer = new PrintWriter(socket.getOutputStream(),true);
+    //        writer.println(name);
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+    //    } catch (IOException ex) {
+    //      throw new RuntimeException(ex);
+    //    }
+    //}
     public Client() {
         try (Socket socket = new Socket(HOST, PORT)) {
 

@@ -10,9 +10,10 @@ public class Main {
 
         Thread.sleep(1000);
 
-        Client client1 = new Client("Bob");
-        Client client2 = new Client("Job");
-        Client client3 = new Client("Vob");
+        //-------------Class for test, Sonar gives an error
+        //Client client1 = new Client("Bob");
+        //Client client2 = new Client("Job");
+        //Client client3 = new Client("Vob");
 
         Client client = new Client();
     }
